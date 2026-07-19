@@ -1,80 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahalakshmi | Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahalakshmi P — CSE Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --panel:#111B2E;
+    --panel-line:#22304A;
+    --text:#E7ECF2;
+    --text-dim:#8B98AC;
+    --signal:#4FD1C5;
+    --amber:#F0A860;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--signal); color:#0B1220;}
+
+  a{color:var(--signal); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  a:focus-visible, button:focus-visible{outline:2px solid var(--signal); outline-offset:3px;}
+
+  .mono{font-family:'JetBrains Mono', monospace;}
+  h1,h2,h3{font-family:'Space Grotesk', sans-serif;}
+
+  /* ---------- Background circuit texture ---------- */
+  .bg-grid{
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(var(--panel-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--panel-line) 1px, transparent 1px);
+    background-size:48px 48px;
+    opacity:0.18;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+  }
+
+  .wrap{
+    position:relative; z-index:1;
+    max-width:840px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- Signal trace spine ---------- */
+  .trace{
+    position:absolute;
+    left:0; top:0; bottom:0;
+    width:2px;
+    background:linear-gradient(var(--panel-line), var(--panel-line));
+  }
+  .node-row{
+    position:relative;
+    padding-left:34px;
+  }
+  .node-row::before{
+    content:'';
+    position:absolute;
+    left:-5px; top:6px;
+    width:12px; height:12px;
+    border-radius:50%;
+    background:var(--bg);
+    border:2px solid var(--signal);
+    box-shadow:0 0 0 4px rgba(79,209,197,0.08);
+  }
+
+  /* ---------- Hero ---------- */
+  header{
+    position:relative;
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--panel-line);
+  }
+  .eyebrow{
+    color:var(--signal);
+    font-size:0.8rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:8px; height:8px;
+    background:var(--signal);
+    border-radius:50%;
+    box-shadow:0 0 8px var(--signal);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1;}
+    50%{opacity:0.35;}
+  }
+  header h1{
+    font-size:clamp(2.4rem, 6vw, 4rem);
+    font-weight:700;
+    letter-spacing:-0.01em;
+    line-height:1.05;
+  }
+  header .role{
+    margin-top:14px;
+    font-size:1.15rem;
+    color:var(--text-dim);
+    max-width:520px;
+  }
+  .badge-row{
+    margin-top:34px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .badge{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    padding:6px 12px;
+    border:1px solid var(--panel-line);
+    border-radius:4px;
+    color:var(--text-dim);
+    background:var(--panel);
+  }
+  .contact-row{
+    margin-top:40px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+  }
+  .contact-row span{color:var(--text-dim); margin-right:6px;}
+
+  /* ---------- Sections ---------- */
+  main{position:relative;}
+  section{
+    padding:56px 0;
+    border-bottom:1px solid var(--panel-line);
+  }
+  section:last-of-type{border-bottom:none;}
+  .sec-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--amber);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+  section h2{
+    font-size:1.5rem;
+    margin-bottom:20px;
+  }
+  section p{
+    color:var(--text-dim);
+    max-width:600px;
+  }
+
+  /* Internship / cert entries */
+  .entry{
+    padding:16px 0;
+    border-top:1px solid var(--panel-line);
+  }
+  .entry:first-of-type{border-top:none;}
+  .entry-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .entry-title{font-weight:600; font-size:1rem;}
+  .entry-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--signal);
+    white-space:nowrap;
+  }
+  .entry-sub{color:var(--text-dim); font-size:0.92rem; margin-top:4px;}
+
+  /* Education */
+  .edu-block{margin-bottom:22px;}
+  .edu-block:last-child{margin-bottom:0;}
+  .edu-top{display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;}
+  .edu-name{font-weight:600;}
+  .edu-year{font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--text-dim);}
+  .edu-detail{color:var(--text-dim); font-size:0.92rem; margin-top:2px;}
+  .edu-score{color:var(--amber); font-family:'JetBrains Mono', monospace; font-size:0.85rem; margin-top:4px;}
+
+  /* Skills grid */
+  .skill-grid{
+    display:flex; flex-wrap:wrap; gap:10px;
+  }
+  .skill-chip{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.85rem;
+    padding:8px 14px;
+    border-radius:4px;
+    background:var(--panel);
+    border:1px solid var(--panel-line);
+    color:var(--text);
+    transition:border-color 0.2s, transform 0.2s;
+  }
+  .skill-chip:hover{border-color:var(--signal); transform:translateY(-2px);}
+
+  /* Traits */
+  .trait-list{
+    display:flex; flex-wrap:wrap; gap:8px 24px;
+  }
+  .trait-list li{
+    list-style:none;
+    color:var(--text-dim);
+    font-size:0.95rem;
+    position:relative;
+    padding-left:16px;
+  }
+  .trait-list li::before{
+    content:'—';
+    position:absolute; left:0; color:var(--amber);
+  }
+
+  /* Footer */
+  footer{
+    padding:48px 0 80px;
+    color:var(--text-dim);
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+
+  @media (max-width: 600px){
+    header{padding:64px 0 48px;}
+    .node-row{padding-left:26px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
 </head>
-
 <body>
-<img src="profile.jpg" alt="My Photo" width="180">
 
-<header>
-    <h1>Mahalakshmi</h1>
-    <p>
-        Final Year B.E. Computer Science and Engineering Student.<br>
-        Passionate about Python, Java, HTML, Microsoft Excel, and MS Office.<br>
-        Looking for an opportunity to start my career in the IT industry and continuously improve my technical skills.
-    </p>
-</header>
+<div class="bg-grid"></div>
 
-<section>
-    <h2>About Me</h2>
-    <p>
-        Hello! I am Mahalakshmi, a Final Year Computer Science and Engineering student.
-        I am passionate about Web Development, Programming, and learning new technologies.
-        I have knowledge of Python, Java, HTML, Microsoft Excel, and MS Office.
-        I am a quick learner, hardworking, and eager to begin my career in the IT industry.
-    </p>
-</section>
+<div class="wrap">
+  <header>
+    <div class="eyebrow mono">Available for internships &amp; entry-level roles</div>
+    <h1>Mahalakshmi P</h1>
+    <p class="role">Final-year B.E. Computer Science &amp; Engineering student, building a base across IoT, cloud, and data analytics — with hands-on certifications to back it.</p>
+    <div class="badge-row">
+      <span class="badge">Anna University · 2023–2027</span>
+      <span class="badge">Natrampalli, Tamil Nadu</span>
+      <span class="badge">CGPA 7.6/10</span>
+    </div>
+    <div class="contact-row">
+      <div><span>tel</span><a href="tel:+918015810192">+91 80158 10192</a></div>
+      <div><span>mail</span><a href="mailto:mahavicky9421@gmail.com">mahavicky9421@gmail.com</a></div>
+      <div><span>git</span><a href="https://github.com/Mahalakshmi200884" target="_blank" rel="noopener">Mahalakshmi200884</a></div>
+      <div><span>in</span><a href="https://www.linkedin.com/in/maha-mahalakshmi-4a9a88359" target="_blank" rel="noopener">maha-mahalakshmi</a></div>
+    </div>
+  </header>
 
-<section>
-    <h2>Education</h2>
-    <p><strong>Degree:</strong> B.E. Computer Science and Engineering</p>
-    <p><strong>Year:</strong> Final Year</p>
-</section>
+  <main>
+    <div class="trace" aria-hidden="true"></div>
 
-<section>
-    <h2>Technical Skills</h2>
-    <ul>
-        <li>Python</li>
-        <li>Java</li>
-        <li>HTML</li>
-        <li>Microsoft Excel</li>
-        <li>Microsoft Office</li>
-    </ul>
-</section>
+    <section class="node-row">
+      <div class="sec-label">// summary</div>
+      <h2>What I'm building toward</h2>
+      <p>I'm pursuing my B.E. in Computer Science and Engineering, with working knowledge of cloud computing and software testing. Alongside coursework, I've been developing skills in data analytics, the Internet of Things (IoT), and programming in Python and Java.</p>
+    </section>
 
-<section>
-    <h2>Projects</h2>
-    <ul>
-        <li>Student Portfolio Website</li>
-        <li>Student Management System using Python</li>
-        <li>Calculator using HTML, CSS and JavaScript</li>
-    </ul>
-</section>
+    <section class="node-row">
+      <div class="sec-label">// internships</div>
+      <h2>Internships &amp; hands-on certifications</h2>
 
-<section>
-    <h2>Career Objective</h2>
-    <p>
-        To obtain a challenging position in a reputed organization where I can apply my technical skills,
-        continue learning, and contribute to the organization's growth and success.
-    </p>
-</section>
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Internet of Things (IoT) Internship</div>
+          <div class="entry-date">15 days · Sep 2025</div>
+        </div>
+        <div class="entry-sub">Barola Technologies — intensive online internship, certified on completion.</div>
+      </div>
 
-<section>
-    <h2>Contact</h2>
-    <p><strong>Email:</strong> mahavicky9421@gmail.com</p>
-    <p><strong>Phone:</strong> +91 8015810192</p>
-    <p><strong>GitHub:</strong> https://github.com/Mahalakshmi200884</p>
-</section>
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Introduction to Cloud (IBM CC0101EN)</div>
+          <div class="entry-date">Oct 2025</div>
+        </div>
+        <div class="entry-sub">IBM Developer Skills Network / Cognitive Class.</div>
+      </div>
+    </section>
 
-<footer>
-    <p>&copy; 2026 Mahalakshmi. All Rights Reserved.</p>
-</footer>
+    <section class="node-row">
+      <div class="sec-label">// education</div>
+      <h2>Education</h2>
 
-<script src="script.js"></script>
+      <div class="edu-block">
+        <div class="edu-top">
+          <span class="edu-name">Anna University</span>
+          <span class="edu-year">2023 – 2027</span>
+        </div>
+        <div class="edu-detail">B.E. Computer Science and Engineering</div>
+        <div class="edu-score">CGPA: 7.6 / 10</div>
+      </div>
+
+      <div class="edu-block">
+        <div class="edu-top">
+          <span class="edu-name">Government Higher Secondary School, Natrampalli</span>
+          <span class="edu-year">2023</span>
+        </div>
+        <div class="edu-detail">SSLC</div>
+        <div class="edu-score">76%</div>
+      </div>
+
+      <div class="edu-block">
+        <div class="edu-top">
+          <span class="edu-name">Government Higher Secondary School, Natrampalli</span>
+          <span class="edu-year">2022</span>
+        </div>
+        <div class="edu-detail">HSC</div>
+        <div class="edu-score">95%</div>
+      </div>
+    </section>
+
+    <section class="node-row">
+      <div class="sec-label">// skills</div>
+      <h2>Relevant skills</h2>
+      <div class="skill-grid">
+        <span class="skill-chip">C</span>
+        <span class="skill-chip">Python</span>
+        <span class="skill-chip">Java (basics)</span>
+        <span class="skill-chip">MS Office</span>
+        <span class="skill-chip">IoT</span>
+        <span class="skill-chip">Cloud Computing</span>
+        <span class="skill-chip">Data Analytics</span>
+        <span class="skill-chip">Software Testing</span>
+      </div>
+    </section>
+
+    <section class="node-row">
+      <div class="sec-label">// courses &amp; certifications</div>
+      <h2>Courses &amp; certifications</h2>
+
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Ethical Hacking Masterclass</div>
+          <div class="entry-date">Jul 2026</div>
+        </div>
+        <div class="entry-sub">Cydenium</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Introduction to Cloud (IBM CC0101EN)</div>
+          <div class="entry-date">Oct 2025</div>
+        </div>
+        <div class="entry-sub">IBM Developer Skills Network / Cognitive Class</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Data Analytics Masterclass</div>
+          <div class="entry-date">30 days · Nov 2024</div>
+        </div>
+        <div class="entry-sub">NoviTech R&amp;D Pvt. Ltd.</div>
+      </div>
+
+      <div class="entry">
+        <div class="entry-top">
+          <div class="entry-title">Internet of Things (IoT) Internship</div>
+          <div class="entry-date">15 days · Sep 2025</div>
+        </div>
+        <div class="entry-sub">Barola Technologies</div>
+      </div>
+    </section>
+
+    <section class="node-row">
+      <div class="sec-label">// strengths</div>
+      <h2>Extra-curricular strengths</h2>
+      <ul class="trait-list">
+        <li>Problem solving</li>
+        <li>Communication</li>
+        <li>Team collaboration</li>
+        <li>Hard-working</li>
+      </ul>
+    </section>
+
+    <section class="node-row">
+      <div class="sec-label">// languages &amp; interests</div>
+      <h2>Languages &amp; hobbies</h2>
+      <p>Tamil (read, write, speak) · English (read, write)</p>
+      <p style="margin-top:8px;">Listening to music · Travelling</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Mahalakshmi P — B.E. CSE, Anna University</span>
+    <span>Built for GitHub Pages</span>
+  </footer>
+</div>
 
 </body>
 </html>
